@@ -3,6 +3,9 @@ name = "aoc_2020"
 version = "0.0.1"
 authors = ["F0X <f0xde@protonmail.com>"]
 edition = "2018"
+repository = "https://github.com/F0Xde/aoc_2020"
+license = "Unlicense"
+license-file = "LICENSE"
 publish = false
 
 [dependencies]
