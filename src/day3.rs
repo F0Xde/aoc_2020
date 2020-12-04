@@ -15,7 +15,7 @@ pub fn solve_part2(input: &[u8]) -> usize {
     result * check_slope(input, width, (1, 2))
 }
 
-// Width without newline
+/// Returns the width of the map corresponding to the given [input] without a newline
 fn get_width(input: &[u8]) -> usize {
     input.iter().position(|&b| b == b'\n').unwrap()
 }

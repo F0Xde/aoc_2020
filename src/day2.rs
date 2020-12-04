@@ -41,7 +41,7 @@ pub fn solve_part2(input: &[Password]) -> usize {
     input.iter().fold(0, |valid, pw| {
         let bytes = pw.text.as_bytes();
         valid + 
-            ((bytes[pw.range.start() - 1] == pw.letter) as usize ^
-            (bytes[pw.range.end() - 1] == pw.letter) as usize)
+            ((bytes[pw.range.start() - 1] == pw.letter) ^
+            (bytes[pw.range.end() - 1] == pw.letter)) as usize
     })
 }
