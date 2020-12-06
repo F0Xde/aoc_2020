@@ -10,3 +10,13 @@ pub fn solve_part1(input: &str) -> usize {
              .collect::<HashSet<_>>().len())
         .sum()
 }
+
+#[aoc(day6, part2)]
+pub fn solve_part2(input: &str) -> u32 {
+    input.split("\n\n")
+        .map(|group| group.as_bytes()
+             .split(|&b| b == b'\n')
+             .fold(0x3FFFFFF, |all, ans| all & ans.iter().fold(0, |acc, b| acc | 1u32 << b - b'a'))
+             .count_ones())
+        .sum()
+}
