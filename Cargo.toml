@@ -11,3 +11,4 @@ publish = false
 aoc-runner = "0.3"
 aoc-runner-derive = "0.3"
 bitflags = "1.2"
+nom = "6.0"
