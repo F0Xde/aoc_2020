@@ -1,6 +1,5 @@
-use std::ops::RangeInclusive;
-
 use aoc_runner_derive::aoc;
+use std::ops::RangeInclusive;
 
 macro_rules! unwrap_or_false {
     ( $e:expr ) => {
