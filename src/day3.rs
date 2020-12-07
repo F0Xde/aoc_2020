@@ -31,5 +31,5 @@ fn check_slope(input: &[u8], width: usize, slope: (usize, usize)) -> usize {
         }
         x += slope.0;
         y += slope.1;
-    }
+    };
 }

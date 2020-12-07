@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use aoc_runner_derive::aoc;
 use nom::{
     branch::alt,
@@ -13,6 +11,7 @@ use nom::{
     sequence::{terminated, tuple},
     IResult,
 };
+use std::collections::HashMap;
 
 #[aoc(day7, part1)]
 pub fn solve_part1(input: &str) -> u32 {
