@@ -18,28 +18,84 @@ enum Insn {
     Nop(i32),
 }
 
+enum Res {
+    Done(i32),
+    Loop(i32),
+}
+
 #[aoc(day8, part1)]
 pub fn solve_part1(input: &str) -> i32 {
     let mut insns = parse(input).unwrap().1;
-    let mut i = 0;
-    let mut acc = 0;
-    loop {
-        let insn = &mut insns[i as usize];
-        if insn.1 > 0 {
-            break acc;
-        }
-        insn.1 += 1;
-        match insn.0 {
-            Insn::Acc(arg) => acc += arg,
-            Insn::Jmp(arg) => i += arg - 1,
-            _ => {}
-        }
-        i += 1;
+    if let Res::Loop(acc) = run(&mut insns, None) {
+        acc
+    } else {
+        unreachable!();
     }
 }
 
-fn parse(input: &str) -> IResult<&str, Vec<(Insn, u32)>> {
-    many0(terminated(map(insn, |insn| (insn, 0)), opt(line_ending)))(input)
+#[aoc(day8, part2)]
+pub fn solve_part2(input: &str) -> i32 {
+    let mut insns = parse(input).unwrap().1;
+    for change in 0.. {
+        if let Res::Done(acc) = run(&mut insns, Some(change)) {
+            return acc;
+        }
+    }
+    unreachable!();
+}
+
+fn run(insns: &mut [(Insn, bool)], swap: Option<u32>) -> Res {
+    for (_, visited) in insns.iter_mut() {
+        *visited = false;
+    }
+    let mut i = 0;
+    let mut acc = 0;
+    let mut swap_idx = 0;
+    loop {
+        let (insn, visited) = &mut insns[i as usize];
+        if *visited {
+            break Res::Loop(acc);
+        }
+        *visited = true;
+
+        let swapped = match swap {
+            Some(swap) if swap == swap_idx => {
+                swap_insn(insn);
+                true
+            }
+            _ => false
+        };
+        match &insn {
+            Insn::Acc(arg) => acc += arg,
+            Insn::Jmp(arg) => {
+                swap_idx += 1;
+                i += arg - 1
+            }
+            _ => swap_idx += 1,
+        }
+        if swapped {
+            swap_insn(insn);
+        }
+        i += 1;
+        if i as usize >= insns.len() {
+            break Res::Done(acc);
+        }
+    }
+}
+
+fn swap_insn(insn: &mut Insn) {
+    match insn {
+        Insn::Jmp(arg) => *insn = Insn::Nop(*arg),
+        Insn::Nop(arg) => *insn = Insn::Jmp(*arg),
+        _ => {}
+    }
+}
+
+fn parse(input: &str) -> IResult<&str, Vec<(Insn, bool)>> {
+    many0(terminated(
+        map(insn, |insn| (insn, false)),
+        opt(line_ending),
+    ))(input)
 }
 
 fn insn(input: &str) -> IResult<&str, Insn> {
