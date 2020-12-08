@@ -2,11 +2,8 @@ use aoc_runner_derive::aoc;
 use nom::{
     branch::alt,
     bytes::complete::tag,
-    character::complete::digit1,
-    character::complete::newline,
-    character::complete::{alpha1, char},
-    combinator::map_res,
-    combinator::{map, opt, recognize},
+    character::complete::{alpha1, char, digit1, line_ending},
+    combinator::{map, map_res, opt, recognize},
     multi::many1,
     sequence::{terminated, tuple},
     IResult,
@@ -58,7 +55,7 @@ fn child_count(name: &str, bags: &HashMap<&str, Vec<(&str, u32)>>) -> u32 {
 }
 
 fn parse(input: &str) -> IResult<&str, HashMap<&str, Vec<(&str, u32)>>> {
-    many1(terminated(bag, opt(newline)))(input)
+    many1(terminated(bag, opt(line_ending)))(input)
         .map(|(input, bags)| (input, bags.into_iter().collect()))
 }
 
