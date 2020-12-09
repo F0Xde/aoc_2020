@@ -63,7 +63,7 @@ fn run(insns: &mut [(Insn, bool)], swap: Option<u32>) -> Res {
                 swap_insn(insn);
                 true
             }
-            _ => false
+            _ => false,
         };
         match &insn {
             Insn::Acc(arg) => acc += arg,
